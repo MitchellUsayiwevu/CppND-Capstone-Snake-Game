@@ -33,13 +33,12 @@ In this project, you can build your own C++ application or extend this Snake gam
 ## New Features added to the game
 
 1. Allow players to enter their names and save their high scores to a text file -  player names are sorted in descending player score order.
-Assumptions:
-   The text file format is PlayerName Score(e.g., John 100).
-   Each line represents a different player's score and size.
-   The player's name is unique in the file.
+* Assumptions: 
+  * The text file format is PlayerName Score (e.g., John 100).
+  * Each line represents a different player's score and size.
+  * The player's name is unique in the file.
 
-
-
+    
 ## CC Attribution-ShareAlike 4.0 International
 
 

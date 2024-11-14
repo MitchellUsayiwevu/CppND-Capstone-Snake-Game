@@ -26,8 +26,8 @@ int main() {
   std::cout<<"Enter player name: "<<std::endl;
   std::cin>>player_name;
 
-  trackScores myObj(player_name ,game.GetScore());
-  myObj.savePlayerName();
+  trackScores trackObj(player_name ,game.GetScore());
+  trackObj.savePlayerName();
 
   return 0;
 }
