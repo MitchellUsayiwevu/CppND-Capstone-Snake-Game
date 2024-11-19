@@ -2,13 +2,16 @@
 #define CONTROLLER_H
 
 #include "snake.h"
+#include <memory>
 
 class Controller {
  public:
-  void HandleInput(bool &running, Snake &snake) const;
+    Controller(std::shared_ptr<Snake> snake_);
+  void HandleInput(bool &running ) const;
 
  private:
-  void ChangeDirection(Snake &snake, Snake::Direction input,
+    std::shared_ptr<Snake> snake;
+  void ChangeDirection( Snake::Direction input,
                        Snake::Direction opposite) const;
 };
 

@@ -19,6 +19,10 @@ void Snake::Update() {
   }
 }
 
+int Snake::getID()const{
+    return id_;
+}
+
 void Snake::UpdateHead() {
   switch (direction) {
     case Direction::kUp:
