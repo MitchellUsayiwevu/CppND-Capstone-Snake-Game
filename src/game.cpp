@@ -16,8 +16,11 @@ Game::Game(std::size_t grid_width, std::size_t grid_height, std::size_t kScreenW
     }
 
     snake = snakes.at(0);
-    renderer  = std::make_unique<Renderer>( snakes.at(0) ,kScreenWidth,kScreenHeight,kGridWidth,kGridHeight);
-    controller = std::make_unique<Controller>(snakes.at(0));
+//    renderer  = std::make_unique<Renderer>( snakes.at(0) ,kScreenWidth,kScreenHeight,kGridWidth,kGridHeight);
+//    controller = std::make_unique<Controller>(snakes.at(0));
+
+    renderer  = std::make_unique<Renderer>( kScreenWidth,kScreenHeight,kGridWidth,kGridHeight);
+    controller = std::make_unique<Controller>();
     PlaceFood();
 
 }
@@ -30,18 +33,18 @@ void Game::Run(std::size_t target_frame_duration){
   int frame_count = 0;
   bool running = true;
 
-//  std::vector<std::thread> threads;
+  std::vector<std::thread> threads;
 //  threads.emplace_back(&Controller::HandleInput, std::move(controller.get()), std::ref(running)); //add snake1
-//  threads.emplace_back(&Controller::HandleInput, std::move(controller.get()),std::ref(running));   //add snake 2
+  threads.emplace_back(&Controller::HandleInput, std::move(controller.get()),std::ref(running), std::ref(snakes.at(0)));   //add snake 1
 
   while (running) {
 
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
-    controller->HandleInput(running );
+//    controller->HandleInput(running, std::ref(snakes.at(0)) );
     Update();
-    renderer->Render(food);
+    renderer->Render(std::ref(snakes),food);
 
     frame_end = SDL_GetTicks();
 
@@ -65,9 +68,9 @@ void Game::Run(std::size_t target_frame_duration){
     }
   }
 
-//  for(auto &thread:threads){
-//      thread.join();
-//  }
+  for(auto &thread:threads){
+      thread.join();
+  }
 }
 
 void Game::PlaceFood() {
@@ -86,21 +89,24 @@ void Game::PlaceFood() {
 }
 
 void Game::Update() {
-  if (!snake->alive) return;
+    for(int i=0; i<num_snakes; i++) {
 
-  snake->Update();
+        if (!snakes.at(i)->alive) return;
 
-  int new_x = static_cast<int>(snake->head_x);
-  int new_y = static_cast<int>(snake->head_y);
+        snakes.at(i)->Update();
 
-  // Check if there's food over here
-  if (food.x == new_x && food.y == new_y) {
-    score++;
-    PlaceFood();
-    // Grow snake and increase speed.
-    snake->GrowBody();
-    snake->speed += 0.02;
-  }
+        int new_x = static_cast<int>(snakes.at(i)->head_x);
+        int new_y = static_cast<int>(snakes.at(i)->head_y);
+
+        // Check if there's food over here
+        if (food.x == new_x && food.y == new_y) {
+            score++;
+            PlaceFood();
+            // Grow snake and increase speed.
+            snakes.at(i)->GrowBody();
+            snakes.at(i)->speed += 0.02;
+        }
+    }
 }
 
 int Game::GetScore() const { return score; }

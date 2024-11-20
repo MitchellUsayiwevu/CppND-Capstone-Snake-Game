@@ -18,17 +18,18 @@ class Game {
   int GetScore() const;
   int GetSize() const;
 
+
  private:
 //  Snake snake;
   SDL_Point food;
-  const int num_snakes{2};
+  const int num_snakes{1};
   std::random_device dev;
   std::mt19937 engine;
   std::uniform_int_distribution<int> random_w;
   std::uniform_int_distribution<int> random_h;
-  std::vector<std::shared_ptr<Snake>> snakes;
-  std::shared_ptr<Snake> snake;
 
+  std::shared_ptr<Snake> snake;
+  std::vector<std::shared_ptr<Snake>> snakes;
   int score{0};
 
   std::unique_ptr<Renderer> renderer;
