@@ -118,8 +118,6 @@ void AStar::ExpandNeighbors(const std::vector<int> &current, int goal[2], std::v
  */
 std::vector<std::vector<State>> AStar::Search(std::vector<std::vector<State>> grid, int init[2], int goal[2]) {
     // Create the vector of open nodes.
-
-
     // Initialize the starting node.
     int x = init[0];
     int y = init[1];
@@ -174,4 +172,71 @@ void AStar::PrintBoard(const std::vector<std::vector<State>> board) {
         }
         std::cout << "\n";
     }
+}
+
+void AStar::FindSolutionPath(const std::vector<std::vector<State>> board){
+
+    final_path.push_back({init_[0],init_[1]});
+
+    if (init_[0]<goal_[0] && init_[1]<goal_[1]){
+
+        for (int i = 0; i < board.size(); i++) {
+            for (int j = 0; j < board[i].size(); j++) {
+                if(board[i][j] == State::kPath ){
+                    //add to some container
+                    final_path.push_back({i,j});
+                }
+            }
+        }
+        std::cout<<"case 1"<<std::endl;
+
+    }
+
+    else if (init_[0]<goal_[0] && init_[1]>goal_[1]){
+
+        for (int i = 0; i < board.size(); i++) {
+            for (int j = (board[i].size()-1); j > 0 ; j--) {
+                if(board[i][j] == State::kPath ){
+                    //add to some container
+                    final_path.push_back({i,j});
+                }
+            }
+        }
+
+        std::cout<<"case 2"<<std::endl;
+
+    }
+
+    else if (init_[0]>goal_[0] && init_[1]<goal_[1]){
+
+        for (int i = (board.size() -1); i >0 ; i--) {
+            for (int j = 0; j < board[i].size() ; j++) {
+                if(board[i][j] == State::kPath ){
+                    //add to some container
+                    final_path.push_back({i,j});
+                }
+            }
+        }
+
+        std::cout<<"case 3"<<std::endl;
+
+    }
+    else{
+        for (int i = ( (board.size() ) -1); i >0; i--) {
+            for (int j = ( ( board[i].size() ) - 1); j >0 ; j--) {
+                if(board[i][j] == State::kPath ){
+                    //add to some container
+                    final_path.push_back({i,j});
+                }
+            }
+        }
+
+        std::cout<<"case 4"<<std::endl;
+
+    }
+
+    final_path.push_back({goal_[0],goal_[1]});
+
+    // add part of picking which action to take
+
 }

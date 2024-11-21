@@ -6,6 +6,9 @@
 #include "controller.h"
 #include "renderer.h"
 #include "snake.h"
+#include <mutex>
+#include <condition_variable>
+#include <deque>
 #include <vector>
 
 class Game {
@@ -15,14 +18,18 @@ class Game {
   //  void Run(Controller const &controller, Renderer &renderer,
 //           std::size_t target_frame_duration);
   void Run(std::size_t target_frame_duration);
+  void CheckEvents();
   int GetScore() const;
   int GetSize() const;
 
+  std::deque<SDL_Event> eventQueue;
+  std::mutex queueMutex;
+  std::condition_variable queueCondition;
 
  private:
 //  Snake snake;
   SDL_Point food;
-  const int num_snakes{1};
+  const int num_snakes{2};
   std::random_device dev;
   std::mt19937 engine;
   std::uniform_int_distribution<int> random_w;

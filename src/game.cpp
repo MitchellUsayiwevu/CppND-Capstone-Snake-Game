@@ -20,12 +20,39 @@ Game::Game(std::size_t grid_width, std::size_t grid_height, std::size_t kScreenW
 //    controller = std::make_unique<Controller>(snakes.at(0));
 
     renderer  = std::make_unique<Renderer>( kScreenWidth,kScreenHeight,kGridWidth,kGridHeight);
-    controller = std::make_unique<Controller>();
+    controller = std::make_unique<Controller>(*this);
     PlaceFood();
 
 }
 
-void Game::Run(std::size_t target_frame_duration){
+void Game::CheckEvents(){
+    bool running = true;
+    while (running) {
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                running = false;
+                // Notify the worker thread
+                {
+                    std::lock_guard<std::mutex> lock(queueMutex);
+                    eventQueue.emplace_back(event);
+                }
+                queueCondition.notify_one();
+            } else if (event.type == SDL_KEYDOWN) {
+                // Forward the event to the worker thread
+                {
+                    std::lock_guard<std::mutex> lock(queueMutex);
+                    eventQueue.emplace_back(event);
+                }
+                queueCondition.notify_one();
+            }
+        }
+
+    }
+
+}
+
+void Game::Run( std::size_t target_frame_duration){
   Uint32 title_timestamp = SDL_GetTicks();
   Uint32 frame_start;
   Uint32 frame_end;
@@ -33,9 +60,12 @@ void Game::Run(std::size_t target_frame_duration){
   int frame_count = 0;
   bool running = true;
 
-  std::vector<std::thread> threads;
-//  threads.emplace_back(&Controller::HandleInput, std::move(controller.get()), std::ref(running)); //add snake1
-  threads.emplace_back(&Controller::HandleInput, std::move(controller.get()),std::ref(running), std::ref(snakes.at(0)));   //add snake 1
+  std::thread eventThread(&Game::CheckEvents,this);
+
+  std::vector<std::thread> Inputthreads;
+
+    Inputthreads.emplace_back(&Controller::HandleInput, std::move(controller.get()),std::ref(running), std::ref(snakes.at(0)));   //add snake 0
+    Inputthreads.emplace_back(&Controller::HandleInputAstar, std::move(controller.get()), std::ref(running),std::ref(snakes.at(1)), std::ref(food) ); //add snake1
 
   while (running) {
 
@@ -68,7 +98,8 @@ void Game::Run(std::size_t target_frame_duration){
     }
   }
 
-  for(auto &thread:threads){
+  eventThread.join();
+  for(auto &thread:Inputthreads){
       thread.join();
   }
 }

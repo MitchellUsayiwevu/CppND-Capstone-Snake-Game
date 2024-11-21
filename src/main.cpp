@@ -36,11 +36,21 @@ int main() {
 
 //  int init[2]{0, 0};
 //  int goal[2]{4, 5};
-//
-//  AStar AStarObj(init,goal);
-//  auto board = AStarObj.ReadBoardFile("../src/2.board");
-//  auto solution = AStarObj.Search(board, init, goal);
-//  AStarObj.PrintBoard(solution);
 
-  return 0;
+//    int init[2]{0, 15};
+//    int goal[2]{4, 5};
+
+//    int init[2]{8, 5};
+//    int goal[2]{2, 15};         //Astar fails test
+
+//    int init[2]{4, 5};
+//    int goal[2]{0, 0};
+//
+//    AStar AStarObj(init,goal);
+//    auto board = AStarObj.ReadBoardFile("../src/2.board");
+//    auto solution = AStarObj.Search(board, init, goal);
+//    AStarObj.FindSolutionPath(solution);
+//    AStarObj.PrintBoard(solution);
+
+    return 0;
 }

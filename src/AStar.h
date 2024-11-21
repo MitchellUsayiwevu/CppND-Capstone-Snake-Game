@@ -30,6 +30,7 @@ public:
     static bool Compare(const std::vector<int> a, const std::vector<int> b);
     std::vector<std::vector<State>> ReadBoardFile(std::string path);
     std::vector<State> ParseLine(std::string line);
+    void FindSolutionPath(const std::vector<std::vector<State>> board);
 
 
 private:
@@ -40,6 +41,7 @@ private:
     const int goal_[2];
     std::vector<std::vector<int>> open {};
     std::vector<std::vector<State>> grid;
+    std::vector<std::vector<int>> final_path;
 };
 
 
