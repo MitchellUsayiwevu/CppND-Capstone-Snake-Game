@@ -60,19 +60,45 @@ void Controller::HandleInput(bool &running, std::shared_ptr<Snake>& snake) const
 }
 
 void Controller::HandleInputAstar(bool &running, std::shared_ptr<Snake>& snake, SDL_Point& food ) const {
-//    int init[2]{0, 0};
-//    int goal[2]{4, 5};
 
-    int init[2]{static_cast<int>(snake->head_x), static_cast<int>(snake->head_y)};
-    int goal[2]{static_cast<int>(food.x), static_cast<int>(food.y)};
+    while(true){
 
-    AStar AStarObj(init,goal);
-    auto board = AStarObj.ReadBoardFile("../src/2.board");
-    auto solution = AStarObj.Search(board, init, goal);
-    AStarObj.FindSolutionPath(solution);
-    AStarObj.PrintBoard(solution);
+        int init[2]{static_cast<int>(snake->head_x), static_cast<int>(snake->head_y)};
+        int goal[2]{static_cast<int>(food.x), static_cast<int>(food.y)};
 
-//    while(running){
-//
-//    }
+        AStar AStarObj(init,goal);
+        auto board = AStarObj.ReadBoardFile("../src/2.board");
+        auto solution = AStarObj.Search(board, init, goal);
+        std::vector<AstarDirection> actions =  AStarObj.FindSolutionPath(solution);
+
+        for (auto &dir:actions) {
+
+            switch (dir) {
+                case AstarDirection::Up:
+                    ChangeDirection(snake, Snake::Direction::kUp,
+                                    Snake::Direction::kDown);
+//                    std::cout << " astar up" << std::endl;
+                    break;
+                case AstarDirection::Down:
+                    ChangeDirection(snake, Snake::Direction::kDown,
+                                    Snake::Direction::kUp);
+//                    std::cout << " astar down" << std::endl;
+                    break;
+                case AstarDirection::Left:
+                    ChangeDirection(snake, Snake::Direction::kLeft,
+                                    Snake::Direction::kRight);
+//                    std::cout << "astar left" << std::endl;
+                    break;
+                case AstarDirection::Right:
+                    ChangeDirection(snake, Snake::Direction::kRight,
+                                    Snake::Direction::kLeft);
+//                    std::cout << "astar right" << std::endl;
+                    break;
+            }
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+        }
+    }
+
 }

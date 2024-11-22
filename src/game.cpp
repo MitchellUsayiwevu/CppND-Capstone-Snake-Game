@@ -102,6 +102,9 @@ void Game::Run( std::size_t target_frame_duration){
   for(auto &thread:Inputthreads){
       thread.join();
   }
+
+//    SDL_DestroyWindow(window);
+    SDL_Quit();
 }
 
 void Game::PlaceFood() {

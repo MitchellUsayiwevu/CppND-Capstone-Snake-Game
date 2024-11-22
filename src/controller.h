@@ -7,6 +7,10 @@
 #include <condition_variable>
 #include <deque>
 #include "game.h"
+#include "chrono"
+#include "thread"
+
+class Game;
 
 class Controller {
  public:

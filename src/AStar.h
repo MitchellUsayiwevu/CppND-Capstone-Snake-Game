@@ -13,6 +13,7 @@
 #include <vector>
 
 enum class State {kEmpty, kObstacle, kClosed, kPath,kStart,kFinish};
+enum class AstarDirection {Up, Down,Left, Right};
 
 class AStar {
 
@@ -22,18 +23,18 @@ public:
     void PrintBoard(const std::vector<std::vector<State>> board);
     std::string CellString(State cell);
     std::vector<std::vector<State>> Search(std::vector<std::vector<State>> grid, int init[2], int goal[2]);
+    std::vector<std::vector<State>> ReadBoardFile(std::string path);
+    std::vector<State> ParseLine(std::string line);
+    std::vector<AstarDirection> FindSolutionPath(const std::vector<std::vector<State>> board);
+
+private:
     void ExpandNeighbors(const std::vector<int> &current, int goal[2], std::vector<std::vector<State>> &grid);
     void AddToOpen(int x, int y, int g, int h, std::vector<std::vector<State>> &grid);
     bool CheckValidCell(int x, int y, std::vector<std::vector<State>> &grid);
     int Heuristic(int x1, int y1, int x2, int y2);
     void CellSort(std::vector<std::vector<int>> *v);
     static bool Compare(const std::vector<int> a, const std::vector<int> b);
-    std::vector<std::vector<State>> ReadBoardFile(std::string path);
-    std::vector<State> ParseLine(std::string line);
-    void FindSolutionPath(const std::vector<std::vector<State>> board);
-
-
-private:
+    void FirstDirection(std::vector<int> &a, std::vector<int> &b);
 
 // directional deltas
     const int delta[4][2]{{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
@@ -42,6 +43,7 @@ private:
     std::vector<std::vector<int>> open {};
     std::vector<std::vector<State>> grid;
     std::vector<std::vector<int>> final_path;
+    std::vector<AstarDirection> actions;
 };
 
 

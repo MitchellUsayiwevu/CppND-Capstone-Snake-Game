@@ -174,7 +174,7 @@ void AStar::PrintBoard(const std::vector<std::vector<State>> board) {
     }
 }
 
-void AStar::FindSolutionPath(const std::vector<std::vector<State>> board){
+std::vector<AstarDirection> AStar::FindSolutionPath(const std::vector<std::vector<State>> board){
 
     final_path.push_back({init_[0],init_[1]});
 
@@ -183,12 +183,11 @@ void AStar::FindSolutionPath(const std::vector<std::vector<State>> board){
         for (int i = 0; i < board.size(); i++) {
             for (int j = 0; j < board[i].size(); j++) {
                 if(board[i][j] == State::kPath ){
-                    //add to some container
                     final_path.push_back({i,j});
                 }
             }
         }
-        std::cout<<"case 1"<<std::endl;
+//        std::cout<<"case 1"<<std::endl;
 
     }
 
@@ -197,13 +196,12 @@ void AStar::FindSolutionPath(const std::vector<std::vector<State>> board){
         for (int i = 0; i < board.size(); i++) {
             for (int j = (board[i].size()-1); j > 0 ; j--) {
                 if(board[i][j] == State::kPath ){
-                    //add to some container
                     final_path.push_back({i,j});
                 }
             }
         }
 
-        std::cout<<"case 2"<<std::endl;
+//        std::cout<<"case 2"<<std::endl;
 
     }
 
@@ -212,31 +210,57 @@ void AStar::FindSolutionPath(const std::vector<std::vector<State>> board){
         for (int i = (board.size() -1); i >0 ; i--) {
             for (int j = 0; j < board[i].size() ; j++) {
                 if(board[i][j] == State::kPath ){
-                    //add to some container
                     final_path.push_back({i,j});
                 }
             }
         }
 
-        std::cout<<"case 3"<<std::endl;
+//        std::cout<<"case 3"<<std::endl;
 
     }
     else{
         for (int i = ( (board.size() ) -1); i >0; i--) {
             for (int j = ( ( board[i].size() ) - 1); j >0 ; j--) {
                 if(board[i][j] == State::kPath ){
-                    //add to some container
                     final_path.push_back({i,j});
                 }
             }
         }
 
-        std::cout<<"case 4"<<std::endl;
+//        std::cout<<"case 4"<<std::endl;
 
     }
 
     final_path.push_back({goal_[0],goal_[1]});
 
+    for (int i=0; i<( final_path.size() - 1 );i++){
+
+        FirstDirection( final_path[i], final_path[i+1]);
+    }
+
+    return actions;
     // add part of picking which action to take
 
+}
+
+void AStar::FirstDirection(std::vector<int>& a, std::vector<int>& b){
+
+    if (a[0]==b[0]){
+        if (b[1]>a[1]){
+            actions.push_back(AstarDirection::Right);
+        }else if(a[1]>b[1]){
+            actions.push_back(AstarDirection::Left);
+        }
+    }
+    else if (a[1]==b[1]){
+        if(a[0]>b[0]){
+            actions.push_back(AstarDirection::Up);
+        }
+        else if(b[0]>a[0]){
+            actions.push_back(AstarDirection::Down);
+        }
+    }
+    else {
+        actions.push_back(AstarDirection::Down);;    //default action
+    }
 }

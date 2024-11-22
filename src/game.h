@@ -11,6 +11,8 @@
 #include <deque>
 #include <vector>
 
+class Controller;
+
 class Game {
  public:
 
