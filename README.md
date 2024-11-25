@@ -37,39 +37,48 @@ In this project, you can build your own C++ application or extend this Snake gam
   * The text file format is PlayerName Score (e.g., John 100).
   * Each line represents a different player's score and size.
   * The player's name is unique in the file.
+2. Add another snake to the game that is controlled by the computer using the A* search algorithm. -  An additional snake has been added to the game that is contolled
+by the AStar search algorithm.
+* The snake controlled by the human and the snake controlled by the computer compete for the same food
+* The scores of both the computer and the player are tracked throughout the game
 
 
 ## Project Rubrics
 ## README (All Rubric Points REQUIRED):
-- [x] A README with instructions is included with the project.
-- [x] The README indicates which project is chosen.
-- [x] The README includes information about each rubric point addressed.
+- [x] A README with instructions is included with the project -  Yes!
+- [x] The README indicates which project is chosen - Yes.
+- [x] The README includes information about each rubric point addressed - Yes!!
 ## Compiling and Testing (All Rubric Points REQUIRED)
-- [x] The submission must compile and run.
+- [x] The submission must compile and run -  project compiles and runs on the Udacity workspace.
 ## Loops, Functions, I/O
-- [x] The project demonstrates an understanding of C++ functions and control structures.
-- [x] The project reads data from a file and process the data, or the program writes data to a file - The project reads data from an external file or writes data to a file as part of the necessary operation of the program.
-- [x] The project accepts user input and processes the input.
-- [x] The project uses data structures and immutable variables.
+- [x] The project demonstrates an understanding of C++ functions and control structures -  use of functions, loops, switch-cases, if statements used throughout the project.
+- [x] The project reads data from a file and process the data, or the program writes data to a file - The project reads data from an external file 
+highest_scores.txt and writes data to the file after a game has ended
+- [x] The project accepts user input and processes the input - the program asks for username at the end of the game and this is used to update highest_scores.txt file.
+- [x] The project uses data structures and immutable variables - const variables, std::vectors, classes, enum classes is used in the project.
 ## Object Oriented Programming
-- [x] One or more classes are added to the project with appropriate access specifiers for class members.
-- [x] Class constructors utilize member initialization lists.
-- [x] Classes abstract implementation details from their interfaces.
+- [x] One or more classes are added to the project with appropriate access specifiers for class members -  added classes trackScores to handle keeping track of the highest scores in the game 
+and AStar to control the second snake in the game
+- [x] Class constructors utilize member initialization lists - the constructor of the  Astar class initialises init and goal points.
+- [x] Classes abstract implementation details from their interfaces - classes used hide implementation details from the user.
 - [ ] Overloaded functions allow the same function to operate on different parameters.
 - [ ] Classes follow an appropriate inheritance hierarchy with virtual and override functions.
 - [ ] Templates generalize functions or classes in the project.
 ## Memory Management
-- [x] The project makes use of references in function declarations.
+- [x] The project makes use of references in function declarations -  references are used in different function declarations throughout the project.
 - [ ] The project uses destructors appropriately.
-- [x] The project uses scope / Resource Acquisition Is Initialization (RAII) where appropriate.
+- [x] The project uses scope / Resource Acquisition Is Initialization (RAII) where appropriate -  using smart pointers in
+the project that use RAII and make sure that when they go out of scope, the destructors are called automatically.
 - [ ] The project follows the Rule of 5.
-- [x] The project uses move semantics to move data, instead of copying it, where possible.
-- [x] The project uses smart pointers instead of raw pointers.
+- [x] The project uses move semantics to move data, instead of copying it, where possible - use move semantics when passing controller unique pointer in the threads.
+- [x] The project uses smart pointers instead of raw pointers - I have implemented renderer and controller unique pointers that are used in 
+Game::Run instead of objects .
 ## Concurrency
-- [ ] The project uses multithreading.
+- [x] The project uses multithreading. -  I have implemented 3 additional threads to handle input for the 2 snakes
 - [ ] A promise and future is used in the project.
-- [ ] A mutex or lock is used in the project.
-- [ ] A condition variable is used in the project.
+- [x] A mutex or lock is used in the project. - A mutex is locked by unique_lock when the worker thread is accessing data in the event queue (critical section)
+- [x] A condition variable is used in the project.  - I am using a CV and a unique lock to make a worker thread sleep and wait for 
+keyboard key events for the snake to implement 
     
 ## CC Attribution-ShareAlike 4.0 International
 

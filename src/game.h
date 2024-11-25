@@ -21,8 +21,9 @@ class Game {
 //           std::size_t target_frame_duration);
   void Run(std::size_t target_frame_duration);
   void CheckEvents();
-  int GetScore() const;
-  int GetSize() const;
+  std::vector<int> GetScore() const;
+  std::vector<int> GetSize() ;
+  bool running = true;
 
   std::deque<SDL_Event> eventQueue;
   std::mutex queueMutex;
@@ -30,6 +31,7 @@ class Game {
 
  private:
 //  Snake snake;
+
   SDL_Point food;
   const int num_snakes{2};
   std::random_device dev;
@@ -40,6 +42,9 @@ class Game {
   std::shared_ptr<Snake> snake;
   std::vector<std::shared_ptr<Snake>> snakes;
   int score{0};
+  std::vector<int>scores{0,0};
+  std::vector<int>sizes;
+  bool _destroyed = false;
 
   std::unique_ptr<Renderer> renderer;
   std::unique_ptr<Controller> controller;

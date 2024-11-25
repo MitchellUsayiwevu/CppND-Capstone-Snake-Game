@@ -4,7 +4,7 @@
 
 #include "trackScores.h"
 
-trackScores::trackScores(std::string & player_name , int&& score):player_name_(player_name),score_(score){
+trackScores::trackScores(std::string & player_name , int& score):player_name_(player_name),score_(score){
 
 }
 

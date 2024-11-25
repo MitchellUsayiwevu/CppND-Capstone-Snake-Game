@@ -24,14 +24,16 @@ int main() {
   game.Run(  kMsPerFrame);
 
   std::cout << "Game has terminated successfully!\n";
-  std::cout << "Score: " << game.GetScore() << "\n";
-  std::cout << "Size: " << game.GetSize() << "\n";
+  std::cout << "Your Score: " << game.GetScore().at(0) << "\n";
+  std::cout << "Computer Score: " << game.GetScore().at(1) << "\n";
+  std::cout << " Your Size: " << game.GetSize().at(0) << "\n";
+  std::cout << " Computer Size: " << game.GetSize().at(1) << "\n";
 
   std::string player_name{};
   std::cout<<"Enter player name: "<<std::endl;
   std::cin>>player_name;
 
-  trackScores trackObj(player_name ,game.GetScore());
+  trackScores trackObj(player_name , game.GetScore().at(0));
   trackObj.savePlayerName();
 
 //  int init[2]{0, 0};

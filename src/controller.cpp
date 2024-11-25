@@ -18,7 +18,7 @@ void Controller::ChangeDirection(std::shared_ptr<Snake> &snake, Snake::Direction
 void Controller::HandleInput(bool &running, std::shared_ptr<Snake>& snake) const {
 //void Controller::HandleInput(bool &running) const {
 
-  while(true){
+  while(running){
 
     SDL_Event e;
 
@@ -31,7 +31,7 @@ void Controller::HandleInput(bool &running, std::shared_ptr<Snake>& snake) const
       running = false;
 
     } else if (e.type == SDL_KEYDOWN) {
-      std::cout << "Worker thread received key press: ";
+//      std::cout << "Worker thread received key press: ";
 
       switch (e.key.keysym.sym) {
         case SDLK_UP:
@@ -61,7 +61,7 @@ void Controller::HandleInput(bool &running, std::shared_ptr<Snake>& snake) const
 
 void Controller::HandleInputAstar(bool &running, std::shared_ptr<Snake>& snake, SDL_Point& food ) const {
 
-    while(true){
+    while(running){
 
         int init[2]{static_cast<int>(snake->head_x), static_cast<int>(snake->head_y)};
         int goal[2]{static_cast<int>(food.x), static_cast<int>(food.y)};
@@ -96,9 +96,11 @@ void Controller::HandleInputAstar(bool &running, std::shared_ptr<Snake>& snake, 
                     break;
             }
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
         }
+
+        actions.clear();
     }
 
 }

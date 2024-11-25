@@ -41,7 +41,6 @@ std::vector<std::vector<State>> AStar::ReadBoardFile(std::string path) {
     return board;
 }
 
-
 /**
  * Compare the F values of two cells.
  */
@@ -51,7 +50,6 @@ bool AStar::Compare(const std::vector<int> a, const std::vector<int> b) {
     return f1 > f2;
 }
 
-
 /**
  * Sort the two-dimensional vector of ints in descending order.
  */
@@ -59,12 +57,10 @@ void AStar::CellSort(std::vector<std::vector<int>> *v) {
     sort(v->begin(), v->end(), Compare);
 }
 
-
 // Calculate the manhattan distance
 int AStar::Heuristic(int x1, int y1, int x2, int y2) {
     return abs(x2 - x1) + abs(y2 - y1);
 }
-
 
 /**
  * Check that a cell is valid: on the grid, not an obstacle, and clear.
@@ -77,7 +73,6 @@ bool AStar::CheckValidCell(int x, int y, std::vector<std::vector<State>> &grid) 
     return false;
 }
 
-
 /**
  * Add a node to the open list and mark it as open.
  */
@@ -86,7 +81,6 @@ void AStar::AddToOpen(int x, int y, int g, int h, std::vector<std::vector<State>
     open.push_back(std::vector<int>{x, y, g, h});
     grid[x][y] = State::kClosed;
 }
-
 
 /**
  * Expand current nodes's neighbors and add them to the open list.

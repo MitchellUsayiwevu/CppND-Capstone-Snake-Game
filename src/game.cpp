@@ -26,7 +26,7 @@ Game::Game(std::size_t grid_width, std::size_t grid_height, std::size_t kScreenW
 }
 
 void Game::CheckEvents(){
-    bool running = true;
+
     while (running) {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -48,6 +48,8 @@ void Game::CheckEvents(){
             }
         }
 
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
     }
 
 }
@@ -58,7 +60,6 @@ void Game::Run( std::size_t target_frame_duration){
   Uint32 frame_end;
   Uint32 frame_duration;
   int frame_count = 0;
-  bool running = true;
 
   std::thread eventThread(&Game::CheckEvents,this);
 
@@ -85,7 +86,8 @@ void Game::Run( std::size_t target_frame_duration){
 
     // After every second, update the window title.
     if (frame_end - title_timestamp >= 1000) {
-      renderer->UpdateWindowTitle(score, frame_count);
+//      renderer->UpdateWindowTitle(score, frame_count);
+      renderer->UpdateWindowTitle(scores.at(0), scores.at(1),  frame_count);
       frame_count = 0;
       title_timestamp = frame_end;
     }
@@ -103,8 +105,6 @@ void Game::Run( std::size_t target_frame_duration){
       thread.join();
   }
 
-//    SDL_DestroyWindow(window);
-    SDL_Quit();
 }
 
 void Game::PlaceFood() {
@@ -134,7 +134,7 @@ void Game::Update() {
 
         // Check if there's food over here
         if (food.x == new_x && food.y == new_y) {
-            score++;
+            scores.at(i)++;
             PlaceFood();
             // Grow snake and increase speed.
             snakes.at(i)->GrowBody();
@@ -143,5 +143,12 @@ void Game::Update() {
     }
 }
 
-int Game::GetScore() const { return score; }
-int Game::GetSize() const { return snake->size; }
+std::vector<int>Game::GetScore() const { return scores; }
+
+std::vector<int> Game::GetSize() {
+
+    for (auto &snake:snakes){
+        sizes.emplace_back(snake->size);
+    }
+    return sizes;
+}

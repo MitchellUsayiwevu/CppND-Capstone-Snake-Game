@@ -13,7 +13,7 @@
 
 class trackScores {
 public:
-    trackScores(std::string & player_name , int&& score);
+    trackScores(std::string & player_name , int& score);
     ~trackScores();
     bool checkNameAlreadyExists(std::string & name1, const std::string & name2);
     bool compareScores(int& score1, const int& score2);
